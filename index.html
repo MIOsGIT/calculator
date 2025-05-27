@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>반응형 계산기</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        background-color: #ffffff;
+    }
+
+    .empty, .vertical, .horizontal {
+        display: none;
+    }
+
+    @media (max-width: 360px) {
+        .empty {
+        display: block;
+        font-size: 15px;
+        color: black;
+        }
+    }
+
+    @media (min-width: 361px) and (max-width: 540px) {
+        .vertical {
+        display: block;
+        }
+    }
+
+    @media (min-width: 541px) {
+        .horizontal {
+        display: block;
+        }
+    }
+
+    button {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-size: 27px;
+        border: 1px solid #cccccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .calculator {
+        background-color: #f0f0f0;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .display-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.display {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 45px;
+    text-align: right;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+}
+
+    .buttons {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+    }
+    .buttons.vertical {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .buttons.horizontal {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    .btn-number {
+        background-color: #ffffff;
+        font-weight: bold;
+        color: #333333;
+        font-size: 27px;
+    }
+    .btn-gray {
+        background-color: #dddddd;
+        color: #444444;
+    }
+    .btn-gray-small {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        background-color: #dddddd;
+        color: #444444;
+    }
+    .btn-yellow {
+        background-color: #ffcc00;
+    }
+    .btn-yellow_ {
+        background-color: #ffcc00;
+    }
+    .btn-number:active{
+        background-color: #f0f0f0;
+    }
+    .btn-gray:active{
+        background-color: #f0f0f0;
+    }
+    .btn-gray-small:active{
+        background-color: #f0f0f0;
+    }
+    .btn-yellow:hover{
+        background-color: #ffffff;
+        border-color: #000000;
+    }
+    .btn-yellow_:active{
+        background-color: #ffffff;
+        border-color: #000000;
+    }
+    .btn-yellow.active{
+        background-color: #ffffff;
+        border-color: #000000;
+    }
+    .footer {
+        text-align: right;
+        font-size: 13px;
+        padding: 5px 10px;
+        padding-bottom: 10px;
+        color: #000000;
+}
+    .footer-mono {
+        font-family: 'Courier New', Courier, monospace;
+}
+    .footer-bold {
+        font-weight: bold;
+}
+    .footer-red {
+        font-weight: bold;
+  color: #bd362f;
+}
+  </style>
+</head>
+<body style="flex-direction: column;">
+  <div class="empty">
+    <p>화면을 키워줭~</p>
+  </div>
+
+  <!-- 세로 -->
+  <div class="vertical">
+        <div class="calculator">
+            <div class="display-container">
+                <div class="display" id="display-vertical">0</div>
+              </div>         
+            <div class="buttons vertical">
+                <button class="btn-gray-small" onclick="handleButton('HMS')">HMS</button>
+                <button class="btn-gray-small" onclick="handleButton('Rnd')">Rnd</button>
+                <button class="btn-gray-small" onclick="handleButton('Ans')">Ans</button>
+                <button class="btn-gray-small" onclick="handleButton('Wow')">Wow</button>
+    
+                <button class="btn-gray" onclick="handleButton('AC')">AC</button>
+                <button class="btn-gray" onclick="handleButton('sqrt')">√x</button>
+                <button class="btn-gray" onclick="handleButton('%')">%</button>
+                <button class="btn-yellow" onclick="handleButton('/')">÷</button>
+        
+                <button class="btn-number" onclick="handleButton('7')">7</button>
+                <button class="btn-number" onclick="handleButton('8')">8</button>
+                <button class="btn-number" onclick="handleButton('9')">9</button>
+                <button class="btn-yellow" onclick="handleButton('*')">×</button>
+        
+                <button class="btn-number" onclick="handleButton('4')">4</button>
+                <button class="btn-number" onclick="handleButton('5')">5</button>
+                <button class="btn-number" onclick="handleButton('6')">6</button>
+                <button class="btn-yellow" onclick="handleButton('-')">–</button>
+    
+                <button class="btn-number" onclick="handleButton('1')">1</button>
+                <button class="btn-number" onclick="handleButton('2')">2</button>
+                <button class="btn-number" onclick="handleButton('3')">3</button>
+                <button class="btn-yellow" onclick="handleButton('+')">+</button>
+        
+                <button class="btn-number" onclick="handleButton('0')">0</button>
+                <button class="btn-number" onclick="handleButton('.')">.</button>
+                <button class="btn-number" onclick="handleButton('+/-')">+/–</button>
+                <button class="btn-yellow_" onclick="handleButton('=')">=</button>
+    
+                <button class="btn-gray" onclick="handleButton('π')">π</button>
+                <button class="btn-gray" onclick="handleButton('^2')">x²</button>
+                <button class="btn-gray" onclick="handleButton('R2')">R2</button>
+                <button class="btn-gray" onclick="handleButton('R0')">R0</button>
+            </div>
+            <div class="footer">
+            powered by © 
+            <span class="footer-mono">
+                <span class="footer-bold">MJ-</span></span><span class="footer-red">20243100</span>
+                ®
+            </div>
+        </div>
+        </div>
+
+    <!-- 가로 -->
+    <div class="horizontal">
+        <div class="calculator">
+            <div class="display-container">
+                <div class="display" id="display-horizontal">0</div>
+              </div>
+            <div class="buttons horizontal">
+                <button class="btn-gray" onclick="handleButton('HMS')">HMS</button>
+                <button class="btn-gray" onclick="handleButton('Rnd')">Rnd</button>
+                <button class="btn-number" onclick="handleButton('7')">7</button>
+                <button class="btn-number" onclick="handleButton('8')">8</button>
+                <button class="btn-number" onclick="handleButton('9')">9</button>
+                <button class="btn-yellow" onclick="handleButton('/')">÷</button>
+                <button class="btn-gray" onclick="handleButton('R2')">R2</button>
+    
+                <button class="btn-gray" onclick="handleButton('Ans')">Ans</button>
+                <button class="btn-gray" onclick="handleButton('Wow')">Wow</button>
+                <button class="btn-number" onclick="handleButton('4')">4</button>
+                <button class="btn-number" onclick="handleButton('5')">5</button>
+                <button class="btn-number" onclick="handleButton('6')">6</button>
+                <button class="btn-yellow" onclick="handleButton('*')">×</button>
+                <button class="btn-gray" onclick="handleButton('R0')">R0</button>
+    
+                <button class="btn-gray" onclick="handleButton('π')">π</button>
+                <button class="btn-gray" onclick="handleButton('^2')">x²</button>
+                <button class="btn-number" onclick="handleButton('1')">1</button>
+                <button class="btn-number" onclick="handleButton('2')">2</button>
+                <button class="btn-number" onclick="handleButton('3')">3</button>
+                <button class="btn-yellow" onclick="handleButton('-')">–</button>
+                <button class="btn-gray" onclick="handleButton('AC')">CE</button>
+    
+            <button class="btn-gray" onclick="handleButton('sqrt')">√x</button>
+            <button class="btn-gray" onclick="handleButton('%')">%</button>
+            <button class="btn-number" onclick="handleButton('0')">0</button>
+            <button class="btn-number" onclick="handleButton('.')">.</button>
+            <button class="btn-number" onclick="handleButton('+/-')">+/–</button>
+            <button class="btn-yellow" onclick="handleButton('+')">+</button>
+            <button class="btn-yellow_" onclick="handleButton('=')">=</button>
+            </div>
+            <div class="footer">
+            powered by © 
+            <span class="footer-mono">
+                <span class="footer-bold">MJ-</span></span><span class="footer-red">20243100</span>
+                ®
+            </div>
+        </div>
+        </div>
+
+        <div style="margin-top: 50px; max-width: 600px; background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 12px; padding: 20px 25px; font-size: 15px; color: #333; line-height: 1.8; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left;">
+            <strong>🌟 창의적인 기능 안내</strong><br><br>
+            <strong>HMS (시:분:초 변환)</strong>:  
+            소수로 입력된 시간을 `시:분:초` 형태로 변환합니다. 예: 2.5 → 2h 30m 0s<br><br>
+        
+            <strong>Rnd (랜덤 숫자)</strong>:  
+            1~100 사이의 무작위 숫자를 생성하여 입력칸에 표시합니다.<br><br>
+        
+            <strong>Ans (이전 결과)</strong>:  
+            마지막 계산 결과를 다시 입력칸에 불러옵니다.<br><br>
+        
+            <strong>Wow (놀라운 계산)</strong>:  
+            π², √e, log₂10 등 수학적으로 흥미로운 숫자를 랜덤하게 보여줍니다.
+          </div>
+
+          <script>
+            let currentInput = '0';
+            let prevInput = '';
+            let operator = '';
+            let repeatOperand = '';
+            let memory = 0;
+            let lastAnswer = '';  // ✅ 마지막 계산 결과 저장용
+            let waitingForNewInput = false;
+            
+            function updateDisplay() {
+                document.getElementById('display-vertical').textContent = currentInput;
+                document.getElementById('display-horizontal').textContent = currentInput;
+            }
+            
+            function calculate(a, b, op) {
+                a = parseFloat(a);
+                b = parseFloat(b);
+                switch(op) {
+                    case '+': return (a + b).toString();
+                    case '-': return (a - b).toString();
+                    case '*': return (a * b).toString();
+                    case '/': return (b !== 0 ? (a / b).toString() : 'Error');
+                    default: return b.toString();
+                }
+            }
+            
+            function handleButton(value) {
+                if (!isNaN(value) || value === '.') {
+                    if (waitingForNewInput) {
+                        currentInput = value === '.' ? '0.' : value;
+                        waitingForNewInput = false;
+                    } else {
+                        if (value === '.' && currentInput.includes('.')) return;
+                        currentInput = currentInput === '0' && value !== '.' ? value : currentInput + value;
+                    }
+                } else if (['+', '-', '*', '/'].includes(value)) {
+                    if (operator && !waitingForNewInput) {
+                        currentInput = calculate(prevInput, currentInput, operator);
+                    }
+                    operator = value;
+                    prevInput = currentInput;
+                    waitingForNewInput = true;
+                } else if (value === '=') {
+                    if (operator) {
+                        if (!waitingForNewInput) {
+                            repeatOperand = currentInput;
+                            currentInput = calculate(prevInput, currentInput, operator);
+                        } else {
+                            currentInput = calculate(currentInput, repeatOperand, operator);
+                        }
+                        prevInput = currentInput;
+                        lastAnswer = currentInput; // ✅ 마지막 결과 저장
+                        waitingForNewInput = true;
+                    }
+                } else if (value === 'AC' || value === 'CE') {
+                    currentInput = '0';
+                    prevInput = '';
+                    repeatOperand = '';
+                    operator = '';
+                    waitingForNewInput = false;
+                    // lastAnswer는 유지됨 (필요시 여기서 ''으로 초기화 가능)
+                } else if (value === '+/-') {
+                    currentInput = (parseFloat(currentInput) * -1).toString();
+                } else if (value === '%') {
+                    currentInput = (parseFloat(currentInput) / 100).toString();
+                } else if (value === 'sqrt') {
+                    currentInput = Math.sqrt(parseFloat(currentInput)).toString();
+                } else if (value === 'R2' || value === '^2') {
+                    currentInput = Math.pow(parseFloat(currentInput), 2).toString();
+                } else if (value === 'π') {
+                    currentInput = Math.PI.toString();
+                } else if (value === 'R0') {
+                    currentInput = '0';
+                }
+            
+                // ✅ Ans 기능: 마지막 계산 결과 불러오기
+                else if (value === 'Ans') {
+                    if (lastAnswer !== '') {
+                        currentInput = lastAnswer;
+                        waitingForNewInput = true;
+                    }
+                }
+            
+                // ✅ 추가 창의 기능들
+                else if (value === 'HMS') {
+                    let total = parseFloat(currentInput);
+                    if (!isNaN(total)) {
+                        let h = Math.floor(total);
+                        let m = Math.floor((total - h) * 60);
+                        let s = Math.round((((total - h) * 60 - m) * 60));
+                        currentInput = `${h}h ${m}m ${s}s`;
+                        waitingForNewInput = true;
+                    }
+                } else if (value === 'Rnd') {
+                    currentInput = (Math.floor(Math.random() * 100) + 1).toString();
+                    waitingForNewInput = true;
+                } else if (value === 'Wow') {
+                    const options = [
+                        Math.pow(Math.PI, 2).toFixed(6),
+                        Math.sqrt(Math.E).toFixed(6),
+                        Math.log2(10).toFixed(6),
+                        (Math.random() * Math.PI).toFixed(6)
+                    ];
+                    currentInput = options[Math.floor(Math.random() * options.length)];
+                    waitingForNewInput = true;
+                }
+            
+                updateDisplay();
+            }
+            </script>
+            
+            
+</body>
+</html>
